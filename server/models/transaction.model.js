@@ -7,8 +7,7 @@ const Transaction = new mongoose.Schema(
     transactionDate: { type: Date, required: true },
     transactionType: { type: String, required: true },
     accountType: { type: String, required: true },
-  },
-  { collection: "transactions" }
+  }
 );
 
 const model = mongoose.model("TransactionData", Transaction);

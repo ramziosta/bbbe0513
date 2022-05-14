@@ -1,9 +1,4 @@
- 
-const data = {
-    clients: require('../data/clients.json'),
-    setClients: function (data) { this.clients = data }
-}
-
+const Client = require('../models/client.model')
 const getAllClients = (req, res) => {
     res.json(data.clients);
 }
