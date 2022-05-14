@@ -963,3 +963,16 @@
 20220514	16:20:43	28b8bf69-7b0d-4bdc-b356-9363c47ac993	GET	undefined	/refresh
 20220514	16:21:56	8f796998-6364-47c2-9012-a1144deee231	GET	undefined	/clients
 20220514	16:22:10	b5787238-58d9-4b39-9370-049c5c806f2e	POST	undefined	/clients
+20220514	16:57:34	d4c1c453-1fd9-4168-8b2d-6962e392f45c	POST	http://localhost:3000	/register
+20220514	17:10:18	92379ffd-95c8-4079-9302-5b67b7cb44cd	POST	http://localhost:3000	/register
+20220514	17:22:58	a0fa4b6a-0bf2-461f-ab0b-9d1418d7c803	POST	undefined	/auth
+20220514	17:23:06	d118c197-b430-48e7-adb1-0e1828cb3973	POST	undefined	/auth
+20220514	17:26:02	321944ef-d8d4-423f-be3b-cd95b2914555	POST	http://localhost:3000	/auth
+20220514	17:26:16	a1030a4b-bb5e-4882-9736-0af6e1db4890	POST	http://localhost:3000	/auth
+20220514	17:26:32	3b38107d-5e7e-4a5f-b426-a832972ae13e	POST	http://localhost:3000	/auth
+20220514	17:27:04	dcc31aaa-f6be-4423-bb8e-c6ad337e5ff6	POST	undefined	/auth
+20220514	17:29:53	791b4b00-44ec-4a24-a124-a5554cd07660	POST	http://localhost:3000	/auth
+20220514	17:30:13	c30ceb75-cb3c-4ce3-9dcc-6eb38789a28c	POST	http://localhost:3000	/auth
+20220514	17:32:51	300518d6-5732-4e83-81cf-695d9842f665	POST	http://localhost:3000	/auth
+20220514	17:33:14	303d64bc-180b-4a59-8d18-46bf0e424883	POST	http://localhost:3000	/auth
+20220514	17:34:37	72f8f7b7-af1d-4724-a6de-dfd062b0c7f5	POST	http://localhost:3000	/auth

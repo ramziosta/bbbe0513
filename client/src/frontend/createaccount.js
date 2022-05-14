@@ -510,7 +510,7 @@ function CreateAccount() {
                   </Link>
                   <br />
                   <h5 style={{ marginTop: "1rem" }}>
-                    Open New Savings Account
+                    Open New Account
                   </h5>
                   <Link
                     to="/logout"

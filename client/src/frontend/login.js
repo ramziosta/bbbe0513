@@ -25,36 +25,43 @@ function Login() {
   const [isDisabled, setIsdisabled] = useState(true);
   const [user, setUser] = useState({});
   const timeStamp = new Date().toLocaleDateString();
-  const ctx = useContext(UserContext);
+  const { setSession } = useContext(UserContext);
+  const [warn , setWarn] = useState("")
 
-  function handleLogin() {
-    const userLogin = ctx.users.filter(
-      (item) => item.email == email && item.pwd == pwd
-    );
-
-    if (userLogin.length == 0) {
-      alert(
-        "Account email or password is incorrect, please try again. If you dont have an account, please register."
-      );
-      clearForm();
+  function validate(field, label) {
+    if (!field) {
+      setWarn(label.toUpperCase() + " IS A REQUIRED FIELD");
+      setTimeout(() => setWarn(""), 3000);
+      return false;
     }
-    if (userLogin.length != 0) {
-      setShow(false);
-      const elementIndex = ctx.users.findIndex(
-        (item) => item.email == email && item.pwd == pwd
-      );
-      //   const element = ctx.users[elementIndex]
-      ctx.users.splice(elementIndex, 1);
-      ctx.users.splice(0, 0, userLogin[0]);
-      setUser(userLogin[0]);
-    }
-    ctx.log = true;
+    return true;
+  }
 
-    setStatus("LogedIn");
-    ctx.sessionActivity.push({
-      activity: "Login",
-      stamp: timeStamp,
+
+  async function handleLogin() {
+    if (!validate(email, "email")) return;
+    if (!validate(pwd, "password")) return;
+
+    const response = await fetch("http://localhost:4000/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        pwd,
+      }),
     });
+    const data = await response.json();
+    console.log(data);
+
+    if (data.userExists === true) {
+      setWarn("Username and Login could not be validated. Please try again");
+      setTimeout(() => setWarn(""), 3000);
+      return;
+    } else {
+      setShow(false);
+      setStatus('loggedin')
+    }
+    
   }
 
   function clearForm() {
