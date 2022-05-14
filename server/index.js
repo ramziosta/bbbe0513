@@ -29,7 +29,7 @@ app.use(logger);
 
 const port = process.env.PORT || 4000;
 
-var db = "mongodb://localhost:27017/crispy";
+var db = "mongodb+srv://ramziosta:uQNKxJYoX6SESpYx@cluster0.ec8ik.mongodb.net/BadBankDB?retryWrites=true&w=majority";
 
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true,});
 app.use(errorHandler);
@@ -46,9 +46,10 @@ app.use('/register', require('./routes/register'));
 app.use('/auth', require('./routes/auth'));
 app.use('/refresh', require('./routes/refresh'));
 app.use('/logout', require('./routes/logout'));
-
+app.use('/transaction', require('./routes/transaction'));
 //any rout to verify must be after this line
 app.use(verifyJWT);
+
 app.use('/clients', require('./routes/api/clients'))
 app.use("/", routes);
 
