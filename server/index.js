@@ -1,21 +1,18 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const User = require("./models/user.model");
 const routes = require("../server/routes/api");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 const path = require("path");
-require('dotenv').config();
 const corsOptions = require('./config/corsOptions');
 const { logger } = require('./middleware/logEvents');
 const errorHandler = require('./middleware/errorHandler');
 const verifyJWT = require('./middleware/verifyJWT');
 const cookieParser = require('cookie-parser');
-// const credentials = require('./middleware/credentials');
-//const connectDB = require('./config/dbConn');
+const credentials = require('./middleware/credentials');
+const connectDB = require('./config/dbConn');
 
 app.use(cors());
 app.use(express.json());

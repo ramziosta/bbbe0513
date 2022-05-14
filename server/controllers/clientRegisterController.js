@@ -2,7 +2,7 @@ const Client = require('../models/client.model')
 const bcrypt = require("bcrypt");
 
 const handleNewClient = async (req, res) => {
-  const { user, email, pwd, accountType } = req.body;
+  const { user, email, pwd, accountType, accountNumber, created } = req.body;
   if (!email || !pwd)
     return res
       .status(400)
@@ -17,8 +17,11 @@ const handleNewClient = async (req, res) => {
       { user: user, 
         email: email, 
         pwd: hashedPwd , 
-        accountType: accountType
-      });
+        accountType: accountType,
+        accountNumber: accountNumber,
+        created: created,
+        transactions: [],
+              });
 
     console.log(newClient);
     res.status(201).json({ success: `New user ${newClient.user} created!` });

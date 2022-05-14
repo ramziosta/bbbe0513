@@ -8,15 +8,14 @@ const Client = new mongoose.Schema({
   accountType: { type: String, required: true },
   accountNumber: { type: Number },
   balance: { type: Number },
-  transactions: {
-    transaction: {
+  transactions: [
+    {
       amount: { type: Number },
       balance: { type: Number },
       transactionDate: { type: Date },
       transactionType: { type: String },
       accountType: { type: String },
-    },
-  },
+}],
   roles: {
     Admin: { type: Number }, //default: 8675
     Editor: { type: Number }, //default:3099

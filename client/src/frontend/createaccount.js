@@ -59,7 +59,7 @@ function CreateAccount() {
   const [warn, setWarn] = useState("");
   // shows and hids part of the screen
   const [show, setShow] = useState(true);
-
+ const [created, setCXreated] = useState('');
   //sets the status. use for user status/account status ==> need to be used/assigned a function. can be used for chat with customer service, if online/not
   const [status, setStatus] = useState("");
 
@@ -147,15 +147,19 @@ function CreateAccount() {
 
     //creates a random last 4 digit account number
     let accountNumber = Math.floor(Math.random() * 10000);
-
     setAccountNumber(accountNumber);
     console.log("🏦 " + accountNumber);
+
+    // function transform(account){
+    //   accountNumber = account.replace(/(\d{4})(\d{4})(\d{4})(\d{4})/, "$1-$2-$3-$4");
+    //   return accountNumber;
+    // }
 
     // tracks and saves the activities with time stamp
     ctx.transactions.push({
       transactionType: "New account credit",
-      amount: 500,
-      balance: 500,
+      amount: 0,
+      balance: 0,
       transactionDate: timeStamp,
       stamp: timeStamp,
     });
@@ -165,8 +169,8 @@ function CreateAccount() {
       user,
       email,
       pwd,
-      balance: 500,
-      amount: 500,
+      balance:0,
+      amount: 0,
       created: timeStamp,
       transactionDate: timeStamp,
       transactionType: "New account credit",
@@ -183,7 +187,7 @@ function CreateAccount() {
       console.log(error.message);
     }
 
-    //############# serverconnection ###########################
+
     const response = await fetch("http://localhost:4000/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -193,6 +197,8 @@ function CreateAccount() {
         pwd,
         matchPwd,
         accountType,
+    accountNumber,
+    created,
       }),
     });
     const data = await response.json();
