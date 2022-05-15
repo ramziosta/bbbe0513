@@ -7,9 +7,12 @@ const createNewClient = (req, res) => {
     const newClient = {
         id: data.clients?.length ? data.clients[data.clients.length - 1].id + 1 : 1,
         name: req.body.name,
-        password: req.body.password,
+        pwd: req.body.pwd,
         email: req.body.email,
-        accountType: req.body.accountType
+        accountType: req.body.accountType,
+        created: req.body.created,
+        accountNumber: req.body.accountNumber,
+        balance: req.body.balance
     }
 
     if (!newClient.name || !newClient.email) {

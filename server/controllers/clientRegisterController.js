@@ -2,7 +2,7 @@ const Client = require('../models/client.model')
 const bcrypt = require("bcrypt");
 
 const handleNewClient = async (req, res) => {
-  const { user, email, pwd, accountType, accountNumber, created } = req.body;
+  const { user, email, pwd, accountType, accountNumber, created, balance} = req.body;
   if (!email || !pwd)
     return res
       .status(400)
@@ -20,6 +20,7 @@ const handleNewClient = async (req, res) => {
         accountType: accountType,
         accountNumber: accountNumber,
         created: created,
+        balance: balance,
         transactions: [],
               });
 
