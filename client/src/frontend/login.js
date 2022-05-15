@@ -1,6 +1,5 @@
-import { useState, useContext } from "react";
-import Card from "../components/context";
-import { UserContext } from "../components/context";
+import { useRef, useState, useEffect, useContext } from "react";
+import axios from '../api/axios';
 import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import { getAuth, 
@@ -8,11 +7,16 @@ import { getAuth,
   signInWithPopup, 
   signInWithEmailAndPassword 
 } from "firebase/auth";
+import Card from "../components/context";
+import AuthContext from "../context/AuthProvider";
+import { UserContext } from "../components/context";
 import SiteSideBar from "../components/siteSideBar";
-import "../styles/SignIn.css";
 import Header from "../components/Header";
 import Table2 from "../components/Table2";
+import "../styles/SignIn.css";
+
 const provider = new GoogleAuthProvider();
+const LOGIN_URL = '/auth';
 
 export const LoginUser = ({ user }) => {
   return (
@@ -23,20 +27,34 @@ export const LoginUser = ({ user }) => {
     </>
   );
 };
+
 function Login() {
-  const [show, setShow] = useState(true);
-  const [status, setStatus] = useState("");
+  const { setAuth } = useContext(AuthContext);
+  const { setSession } = useContext(UserContext);
+  const userRef = useRef();
+  const errRef = useRef();
+
+  const [user, setUser] = useState({});
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
   const [isDisabled, setIsdisabled] = useState(true);
-  const [user, setUser] = useState({});
-  const timeStamp = new Date().toLocaleDateString();
-  const { setSession } = useContext(UserContext);
   const [warn, setWarn] = useState("");
+  const [errMsg, setErrMsg] = useState('');
+  const [success, setSuccess] = useState('')
+  const [show, setShow] = useState(true);
+  const [status, setStatus] = useState("");
 
-  function validate(field, label) {
+  useEffect(() => {
+    userRef.current.focus();
+}, [])
+
+useEffect(() => {
+    setErrMsg('');
+}, [email,, pwd])
+
+ function validate(field, label) {
     if (!field) {
-      setWarn(label.toUpperCase() + " IS A REQUIRED FIELD");
+      setWarn(alert(label.toUpperCase() + " IS A REQUIRED FIELD"));
       setTimeout(() => setWarn(""), 3000);
       return false;
     }
@@ -75,25 +93,37 @@ function Login() {
       const errorMessage = error.message;
     });
     // auth route from mongo db setup JWT tokens and refresh cookies
-    const response = await fetch("http://localhost:4000/auth", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email,
-        pwd,
-      }),
-    });
-    const data = await response.json();
-    console.log(data);
-    if (data.userExists === true) {
-      setWarn("Username and Login could not be validated. Please try again");
-      setTimeout(() => setWarn(""), 3000);
-      return;
-    } else {
-      setShow(false);
-    }
-   
+    try {
+      const response = await axios.post(LOGIN_URL,
+          JSON.stringify({ email, pwd }),
+          {
+              headers: { 'Content-Type': 'application/json' },
+              withCredentials: true
+          }
+      );
+      console.log(JSON.stringify(response?.data));
+      //console.log(JSON.stringify(response));
+      const accessToken = response?.data?.accessToken;
+      const roles = response?.data?.roles;
+      setAuth({ email, pwd, roles, accessToken });
+      setUser('');
+      setPwd('');
+      setSuccess(true);
+      
+  } catch (err) {
+      if (!err?.response) {
+          setErrMsg('No Server Response');
+      } else if (err.response?.status === 400) {
+          setErrMsg('Missing Username or Password');
+      } else if (err.response?.status === 401) {
+          setErrMsg('Unauthorized');
+      } else {
+          setErrMsg('Login Failed');
+      }
+      errRef.current.focus();
   }
+  setShow(false);
+}
 
   function clearForm() {
     setEmail("");
@@ -106,6 +136,7 @@ function Login() {
     <>
       {show ? (
         <>
+        <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
           <div style={{ background: "grey", height: "62vh" }}>
             <Card
               style={{
@@ -120,7 +151,6 @@ function Login() {
                 padding: "1rem",
               }}
               className="loginCard bg-dark"
-              status={status}
               body={
                 <>
                   <h1
@@ -135,12 +165,17 @@ function Login() {
                     Login
                   </h1>
                   <br />
+
+                  {/* //!############ Email ############## */}
                   <label htmlFor="email">Email address</label>
                   <input
-                    type="text"
+                    type="email"
                     className="form-control"
                     id="email"
+                    ref={userRef}
+                    autoComplete="off"
                     placeholder="Email"
+                    required
                     value={email}
                     onChange={(e) => {
                       setEmail(e.currentTarget.value);
@@ -149,6 +184,7 @@ function Login() {
                     }}
                   />
                   <br />
+                  {/* //!############ Password ############## */}
                   <label htmlFor="password">Password</label>
                   <input
                     type="password"
@@ -171,13 +207,24 @@ function Login() {
                   >
                     Login
                   </button>
-                  <br />
                   <button
-                    class="login-with-google-btn"
+                    class="login-with-google-btn" style={{marginLeft:"20px"}} 
                     onClick={signInWithGoogle}
                   >
                     Sign in with Google
                   </button>
+                  <br />
+                  <button type="submit"
+                    className="btn btn-primary" ><Link style={{color:"white", textDecoration:"none", }}
+                    to="/logout">
+                    Create an Account
+                  </Link> </button>
+                 
+                  
+                  <br />
+                 
+                 
+                  
                 </>
               }
             />

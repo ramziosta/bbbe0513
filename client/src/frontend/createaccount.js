@@ -1,24 +1,16 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import {
-  faCheck,
-  faTimes,
-  faInfoCircle,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { auth } from "../firebase";
 import Card from "../components/context";
 import { UserContext } from "../components/context";
-import {
-  USER_REGEX,
-  PWD_REGEX,
-  EMAIL_REGEX,
-} from "../helpers/FormFieldValidation";
+import { USER_REGEX, PWD_REGEX, EMAIL_REGEX } from "../helpers/FormFieldValidation";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import "../styles/SignIn.css";
 import axios from "../api/axios";
 const REGISTER_URL = "/register";
-const timeStamp = new Date().toLocaleDateString();
+
 
 function CreateAccount() {
   const userRef = useRef();
@@ -94,7 +86,6 @@ function CreateAccount() {
   }, [user, pwd, matchPwd, accountType]);
 
   // checks if input field is empty
-
   function emptyFieldValidation(field, label, option) {
     if (!field || option) {
       setErrMsg(alert(label + " cant be blank"));
@@ -104,6 +95,7 @@ function CreateAccount() {
     return true;
   }
 
+  const timeStamp = new Date().toLocaleDateString();
 
   async function AccountRegistration(e) {
     e.preventDefault();
@@ -116,17 +108,17 @@ function CreateAccount() {
     if (!validName || !validEmail || !validPwd || !validMatch || !accountType ) {
       return;
     }
-
+ 
+    // date account created
+    setCreated(timeStamp);
     //creates a random last 4 digit account number
     let accountNumber = Math.floor(Math.random() * 10000);
     setAccountNumber(accountNumber);
     console.log("🏦 " + accountNumber);
-
-    // function transform(account){
+      // function transform(account){
     //   accountNumber = account.replace(/(\d{4})(\d{4})(\d{4})(\d{4})/, "$1-$2-$3-$4");
     //   return accountNumber;
     // }
-
 
     //################# Firebase################
     try {
@@ -147,6 +139,7 @@ function CreateAccount() {
           accountType,
           accountNumber,
           created,
+          balance:0
         }),
         {
           headers: { "Content-Type": "application/json" },
@@ -156,46 +149,22 @@ function CreateAccount() {
       console.log(response?.data);
       console.log(response?.accessToken);
       console.log(JSON.stringify(response));
+      console.log("🏦 " + accountNumber);
       setSuccess(true);
       setShow(false);
     } catch (err) {
       if (!err?.response) {
-        setErrMsg("No Server Response");
+        setErrMsg(alert("No Server Response"));
       } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
+        setErrMsg(alert("Username Taken"));
       } else {
-        setErrMsg("Registration Failed");
+        setErrMsg(alert("Registration Failed"));
       }
       errRef.current.focus();
-    }
-
-    // const response = await fetch("http://localhost:4000/register", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     user,
-    //     email,
-    //     pwd,
-    //     matchPwd,
-    //     accountType,
-    // accountNumber,
-    // created,
-    //   }),
-    // });
-    // const data = await response.json();
-    // console.log(data);
-
-    clearForm();
-
-    //##########################################
-    console.log("🏦 " + accountNumber);
-
-    setShow(false);
-    ctx.register = true;
-    ctx.login = true; //> this will be used in accountregister
-    // setStatus("registered");
+      clearForm();
+      setShow(false);
+   }
   }
-
   const handleModeSelect = (event) => {
     let userSelection = event.target.value;
     console.log(userSelection);
@@ -208,7 +177,7 @@ function CreateAccount() {
     setPwd("");
     setMatchPwd("");
   }
-
+  
   return (
     <>
       {show ? (

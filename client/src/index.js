@@ -4,6 +4,7 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import React from "react";
 import ReactDOM from "react-dom";
 import { UserContext } from "./components/context.js";
+import { AuthProvider } from './context/AuthProvider';
 import "../src/styles/index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -11,6 +12,7 @@ import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
+   <AuthProvider>
       <UserContext.Provider
           value={{
             users: [
@@ -34,6 +36,7 @@ ReactDOM.render(
         >
     <App />
     </UserContext.Provider>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
