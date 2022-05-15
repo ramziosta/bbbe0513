@@ -14,8 +14,6 @@ const cookieParser = require('cookie-parser');
 const credentials = require('./middleware/credentials');
 const connectDB = require('./config/dbConn');
 
-app.use(cors());
-app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: false }));
@@ -23,7 +21,9 @@ app.use(express.json());
 app.use(cookieParser());
 // custom middleware logger
 app.use(logger);
-
+app.use(credentials);
+// Cross Origin Resource Sharing
+app.use(cors(corsOptions));
 const port = process.env.PORT || 4000;
 
 var db = "mongodb+srv://ramziosta:uQNKxJYoX6SESpYx@cluster0.ec8ik.mongodb.net/BadBankDB?retryWrites=true&w=majority";

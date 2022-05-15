@@ -131,69 +131,40 @@ function CreateAccount() {
     //################# Firebase################
     try {
       const user = await createUserWithEmailAndPassword(auth, email, pwd);
-      console.log(user);
-    } catch (error) {
-      console.log(error.message);
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg(alert("No Server Response"));
+      } else if (err.response?.status === 409) {
+        setErrMsg(alert("Username Taken"));
+      } else {
+        setErrMsg(alert("Registration Failed"));
+      }
+      errRef.current.focus();
     }
     //################ server ######################
     try {
+      const user = await createUserWithEmailAndPassword(auth, email, pwd);
       const response = await axios.post(
         REGISTER_URL,
-        JSON.stringify({
-          user,
-          email,
-          pwd,
-          matchPwd,
-          accountType,
-          accountNumber,
-          created,
-        }),
+        JSON.stringify({ user, email, pwd, matchPwd, accountType, accountNumber, balance:0}),
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
-      console.log(response?.data);
-      console.log(response?.accessToken);
-      console.log(JSON.stringify(response));
       setSuccess(true);
-      setShow(false);
     } catch (err) {
       if (!err?.response) {
-        setErrMsg("No Server Response");
+        setErrMsg(alert("No Server Response"));
       } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
+        setErrMsg(alert("Username Taken"));
       } else {
-        setErrMsg("Registration Failed");
+        setErrMsg(alert("Registration Failed"));
       }
       errRef.current.focus();
     }
-
-    // const response = await fetch("http://localhost:4000/register", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     user,
-    //     email,
-    //     pwd,
-    //     matchPwd,
-    //     accountType,
-    // accountNumber,
-    // created,
-    //   }),
-    // });
-    // const data = await response.json();
-    // console.log(data);
-
-    clearForm();
-
-    //##########################################
-    console.log("🏦 " + accountNumber);
-
     setShow(false);
-    ctx.register = true;
-    ctx.login = true; //> this will be used in accountregister
-    // setStatus("registered");
+    clearForm();
   }
 
   const handleModeSelect = (event) => {
@@ -238,19 +209,13 @@ function CreateAccount() {
                           Register A New BadBank Account
                         </h4>
                         <form className="form" onSubmit={AccountRegistration}>
-                          <label htmlFor="username">
+
+                        {/* //!############## User ################ */}
+                         <label htmlFor="username">
                             Username:
-                            <span className={validName ? "valid" : "hide"}>
-                              <FontAwesomeIcon icon={faCheck} />
-                            </span>
-                            <span
-                              className={
-                                validName || !user ? "hide" : "invalid"
-                              }
-                            >
-                              <FontAwesomeIcon icon={faTimes} />
-                            </span>
-                          </label>
+                            <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
+                            <FontAwesomeIcon icon={faTimes} className={validName || !user ? "hide" : "invalid"} />
+                        </label>
                           <input
                             type="text"
                             id="username"
@@ -279,7 +244,8 @@ function CreateAccount() {
                             <br />
                             Letters, numbers, underscores, hyphens allowed.
                           </p>
-                          {/* //<############################## */}
+
+                          {/* //!############## Email ################ */}
                           <label htmlFor="email">
                             Email:
                             <span className={validEmail ? "valid" : "hide"}>
@@ -322,7 +288,8 @@ function CreateAccount() {
                             ex. example@email.com
                             <br />
                           </p>
-                          {/* //<############################## */}
+
+                          {/* //!############## password ################ */}
                           <label htmlFor="password">
                             Password:
                             <span className={validPwd ? "valid" : "hide"}>
@@ -366,7 +333,8 @@ function CreateAccount() {
                             <span aria-label="dollar sign">$</span>{" "}
                             <span aria-label="percent">%</span>
                           </p>
-                          {/* //<############################## */}
+
+                          {/* //! ############### match Pwd ############### */}
                           <label htmlFor="confirm_pwd">
                             Confirm Password:
                             <span
@@ -407,10 +375,11 @@ function CreateAccount() {
                             Must match the first password input field.
                           </p>
 
-                          {/* //<############### account type ############### */}
+                          {/* //!############### account type ############### */}
                           <label htmlFor="confirm_pwd">Account Type:</label>
                           <select
                             onChange={(event) => handleModeSelect(event)}
+                            required
                             name="mode"
                             id="mode-select"
                           >

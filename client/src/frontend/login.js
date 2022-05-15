@@ -8,12 +8,12 @@ import { getAuth,
   signInWithPopup, 
   signInWithEmailAndPassword 
 } from "firebase/auth";
-
 import SiteSideBar from "../components/siteSideBar";
 import "../styles/SignIn.css";
 import Header from "../components/Header";
 import Table2 from "../components/Table2";
 const provider = new GoogleAuthProvider();
+
 export const LoginUser = ({ user }) => {
   return (
     <>
@@ -90,9 +90,9 @@ function Login() {
       setTimeout(() => setWarn(""), 3000);
       return;
     } else {
-
+      setShow(false);
     }
-    setShow(false);
+   
   }
 
   function clearForm() {
