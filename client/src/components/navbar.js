@@ -1,3 +1,6 @@
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import AuthContext from "../context/AuthProvider";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
@@ -34,9 +37,54 @@ const menuItems = [
     path: "alldata",
     description: "User Account Information",
   },
+  {
+    name: "Login",
+    path: "/login",
+    description: "Login Page",
+  },
+  // {
+  //   name: "Logout",
+  //   path: "logout",
+  //   description: "Logout Page",
+  // },
+  // {
+  //   name: "LinkPage",
+  //   path: "linkpage",
+  //   description: "Link Page ",
+  // },
+  // {
+  //   name: "Unauthorized",
+  //   path: "unauthorized",
+  //   description: "Unauthorized Page",
+  // },
+  // {
+  //   name: "Editor",
+  //   path: "editor",
+  //   description: "Editors Page",
+  // },
+  // {
+  //   name: "Admin",
+  //   path: "admin",
+  //   description: "Admin Page",
+  // },
+  // { 
+  //   name: "Lounge",
+  //   path: "lounge",
+  //   description: "Lounge Page",
+  // }
 ];
 
 function NavBar() {
+  const { setAuth } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const logout = async () => {
+        // if used in more components, this should be in context 
+        // axios to /logout endpoint 
+        setAuth({});
+        navigate('/home');
+    }
+
   return (
     <>
       <nav

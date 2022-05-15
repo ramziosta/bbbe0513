@@ -211,7 +211,7 @@ function Login() {
                   <br />
                   <button type="submit"
                     className="btn btn-primary" ><Link style={{color:"white", textDecoration:"none", }}
-                    to="/logout">
+                    to="/CreateAccount">
                     Create an Account
                   </Link> </button>
                  

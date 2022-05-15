@@ -5,7 +5,7 @@ import CreateAccount from "./frontend/createaccount.js";
 import DashBoard from "./frontend/DashBoard";
 import Deposit from "./frontend/deposit.js";
 import Footer from "./components/footer";
-import Home from "./frontend/home.js";
+import Home from "./components/Home.js";
 import Login from "./frontend/login.js";
 import Logout from "./frontend/logout";
 import NavBar from "./components/navbar.js";
@@ -31,23 +31,23 @@ function App() {
           <Route path="/" exact element={<Home />} />
           <Route path="/CreateAccount/" element={<CreateAccount />} />
           <Route path="/login/" exact element={<Login />} />
-          <Route path="/logout/" exact element={<Logout />} />
+          {/* <Route path="/logout/" exact element={<Logout />} />
           <Route path="linkpage" element={<LinkPage />} />
-          <Route path="unauthorized" element={<Unauthorized />} />
+          <Route path="unauthorized" element={<Unauthorized />} /> */}
 
           {/* protected routes with role permission */}
-          <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+          {/* <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}> */}
             <Route path="/dashboard/" exact element={<DashBoard />} />
             <Route path="/deposit/" exact element={<Deposit />} />
             <Route path="/withdraw/" exact element={<Withdraw />} />
-          </Route>
+          {/* </Route> */}
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
-            <Route path="editor" element={<Editor />} />
+            {/* <Route path="editor" element={<Editor />} /> */}
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-            <Route path="admin" element={<Admin />} />
+            {/* <Route path="admin" element={<Admin />} /> */}
             <Route path="/alldata/" exact element={<AllData />} />
           </Route>
 
