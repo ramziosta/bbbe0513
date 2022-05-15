@@ -976,3 +976,14 @@
 20220514	17:32:51	300518d6-5732-4e83-81cf-695d9842f665	POST	http://localhost:3000	/auth
 20220514	17:33:14	303d64bc-180b-4a59-8d18-46bf0e424883	POST	http://localhost:3000	/auth
 20220514	17:34:37	72f8f7b7-af1d-4724-a6de-dfd062b0c7f5	POST	http://localhost:3000	/auth
+20220514	21:09:59	824f8244-d27a-48e2-ad92-a0839c9cdb86	POST	http://localhost:3000	/auth
+20220514	21:11:53	c23e0a74-2206-44fe-b9b2-71d6f7275fb6	POST	http://localhost:3000	/auth
+20220514	21:12:18	f3e99e8a-e350-45d2-87bf-a54c905adf3b	POST	http://localhost:3000	/auth
+20220514	22:01:49	d64d626a-cbf8-4f23-93d8-9f54d1d161bd	POST	http://localhost:3000	/auth
+20220514	22:02:07	4fd7bf86-3c6d-4309-95c0-5b6bfc2fc304	POST	http://localhost:3000	/auth
+20220514	22:03:07	15289bca-eca9-4dba-9e41-1e3fa11e60e1	POST	http://localhost:3000	/auth
+20220514	22:04:00	e9dded1b-33a3-4af0-9f66-daf460e77692	GET	undefined	/Ramzi-Osta-BadBank-App/main.4a9c306e34fdd61e7466.hot-update.json
+20220514	22:04:27	9abe9166-dc0a-4a08-94ff-cb42c0cfc211	POST	http://localhost:3000	/auth
+20220514	22:05:24	c67f0a0e-2bbe-4b0f-8218-eeeb0cdb0a18	POST	http://localhost:3000	/auth
+20220514	22:14:11	4bd60d59-e514-4ce6-bd63-29c52db0ca61	GET	undefined	/Ramzi-Osta-BadBank-App/main.a808dca17223ebd4265b.hot-update.json
+20220514	22:14:46	e4b04c7f-70b2-479e-87b0-bdb52261540f	POST	http://localhost:3000	/auth

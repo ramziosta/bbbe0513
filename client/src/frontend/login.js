@@ -3,11 +3,17 @@ import Card from "../components/context";
 import { UserContext } from "../components/context";
 import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
+import { getAuth, 
+  GoogleAuthProvider, 
+  signInWithPopup, 
+  signInWithEmailAndPassword 
+} from "firebase/auth";
+
 import SiteSideBar from "../components/siteSideBar";
 import "../styles/SignIn.css";
 import Header from "../components/Header";
 import Table2 from "../components/Table2";
-
+const provider = new GoogleAuthProvider();
 export const LoginUser = ({ user }) => {
   return (
     <>
@@ -26,7 +32,7 @@ function Login() {
   const [user, setUser] = useState({});
   const timeStamp = new Date().toLocaleDateString();
   const { setSession } = useContext(UserContext);
-  const [warn , setWarn] = useState("")
+  const [warn, setWarn] = useState("");
 
   function validate(field, label) {
     if (!field) {
@@ -36,12 +42,39 @@ function Login() {
     }
     return true;
   }
+  const auth = getAuth();
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const name = result.user.displayName;
+        const email = result.user.email;
+        const profilePic = result.user.photoURL;
 
+        localStorage.setItem("name", name);
+        localStorage.setItem("email", email);
+        localStorage.setItem("profilePic", profilePic);
+        setShow(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   async function handleLogin() {
     if (!validate(email, "email")) return;
     if (!validate(pwd, "password")) return;
-
+    // firebase log in
+    signInWithEmailAndPassword(auth, email, pwd)
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    });
+    // auth route from mongo db setup JWT tokens and refresh cookies
     const response = await fetch("http://localhost:4000/auth", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -52,16 +85,14 @@ function Login() {
     });
     const data = await response.json();
     console.log(data);
-
     if (data.userExists === true) {
       setWarn("Username and Login could not be validated. Please try again");
       setTimeout(() => setWarn(""), 3000);
       return;
     } else {
-      setShow(false);
-      setStatus('loggedin')
+
     }
-    
+    setShow(false);
   }
 
   function clearForm() {
@@ -139,6 +170,13 @@ function Login() {
                     onClick={handleLogin}
                   >
                     Login
+                  </button>
+                  <br />
+                  <button
+                    class="login-with-google-btn"
+                    onClick={signInWithGoogle}
+                  >
+                    Sign in with Google
                   </button>
                 </>
               }

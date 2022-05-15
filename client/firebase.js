@@ -1,5 +1,4 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey:process.env.REACT_APP_FIREBASE_APP_ID, 
@@ -12,9 +11,6 @@ const firebaseConfig = {
   };
 
 const app = initializeApp(firebaseConfig);
-// Initialize Firebase Authentication and get a reference to the service
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
 
 
 export const signInWithGoogle = () => {
