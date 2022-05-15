@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useContext } from "react";
+import { useRef, useState, useContext } from "react";
 import axios from '../api/axios';
 import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
@@ -44,14 +44,6 @@ function Login() {
   const [show, setShow] = useState(true);
   const [status, setStatus] = useState("");
 
-  useEffect(() => {
-    userRef.current.focus();
-}, [])
-
-useEffect(() => {
-    setErrMsg('');
-}, [email,, pwd])
-
  function validate(field, label) {
     if (!field) {
       setWarn(alert(label.toUpperCase() + " IS A REQUIRED FIELD"));
@@ -71,6 +63,7 @@ useEffect(() => {
         localStorage.setItem("name", name);
         localStorage.setItem("email", email);
         localStorage.setItem("profilePic", profilePic);
+        setAuth({ email, pwd });
         setShow(false);
       })
       .catch((error) => {
@@ -86,7 +79,9 @@ useEffect(() => {
     .then((userCredential) => {
       // Signed in 
       const user = userCredential.user;
-      // ...
+      setAuth({ email, pwd });
+      setShow(false);
+      setUser(user)
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -105,24 +100,24 @@ useEffect(() => {
       //console.log(JSON.stringify(response));
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
-      setAuth({ email, pwd, roles, accessToken });
+      setAuth({user, email, pwd, roles, accessToken });
       setUser('');
       setPwd('');
       setSuccess(true);
-      
+      setShow(false);
+      setUser(user)
   } catch (err) {
       if (!err?.response) {
-          setErrMsg('No Server Response');
+          setErrMsg(alert('No Server Response'));
       } else if (err.response?.status === 400) {
-          setErrMsg('Missing Username or Password');
+          setErrMsg(alert('Please check! Email or Password are missing or entered incorrectly'));
       } else if (err.response?.status === 401) {
-          setErrMsg('Unauthorized');
+          setErrMsg(alert('User Email Unauthorized'));
       } else {
-          setErrMsg('Login Failed');
+          setErrMsg(alert('Login Failed'));
       }
       errRef.current.focus();
   }
-  setShow(false);
 }
 
   function clearForm() {
