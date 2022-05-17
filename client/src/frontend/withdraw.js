@@ -1,6 +1,5 @@
 import { useState, useContext } from "react";
-import Card from "../components/context";
-import { UserContext } from "../components/context";
+import Card from "../context/context";
 import LoginLogoutButton from "../components/LoginLogoutButton";
 import SiteSideBar from "../components/siteSideBar";
 import { NavLink, Link } from "react-router-dom";
@@ -14,7 +13,7 @@ function Withdraw() {
   const [accountType, setAccountType] = useState("");
   const [transactionType, setTransactioinType] = useState("withdraw");
   const timeStamp = new Date().toLocaleDateString();
-  const ctx = useContext(UserContext);
+
 
   function validate(field) {
     if (!Number(field)) {
@@ -27,7 +26,7 @@ function Withdraw() {
       clearForm();
       return false;
     }
-    if (Number(field) > ctx.users[0].balance) {
+    if (Number(field) > balance) {
       alert("Insufficient funds, we cannot process your transaction.");
       clearForm();
       return false;
@@ -40,15 +39,7 @@ function Withdraw() {
     if (!validate(amount, "amount")) return;
 
     setBalance(Number(balance) - Number(amount));
-    ctx.users[0].balance -= Number(amount);
 
-    ctx.transactions.push({
-      transactionType: "Withdrawal",
-      amount,
-      balance,
-      transactionDate: timeStamp,
-      stamp: timeStamp,
-    });
 
     setStatus("withdraw");
     setShow(false);
@@ -81,30 +72,8 @@ function Withdraw() {
   }
 
   return (
-    //> shows the log in button and create an account if user not found/ not created/ not logged in
+
     <>
-      {ctx.users[0].user == "" ? (
-        <>
-          <Link to="/login" className="fa fa-user"></Link>
-          <div style={{ background: "grey", height: "50vh" }}>
-            <div className="text-center fs-3" style={{ padding: "3rem" }}>
-              Please <LoginLogoutButton />
-              <br />
-              or{" "}
-              <NavLink
-                to="/createaccount/"
-                style={{ textDecoration: "none", color: "white" }}
-              >
-                Create An Account.
-              </NavLink>
-            </div>
-          </div>
-        </>
-      ) : (
-        //> otherwise if logged in show the logout button and deposit page
-        //< first withdraw card is shown #####
-        <>
-          {/* //> tennary operator to show and hide the card depending on the handleWithdraw */}
           {show ? (
             <>
               <SiteSideBar />
@@ -116,7 +85,7 @@ function Withdraw() {
                   status={status}
                   body={
                     <>
-                      <h3>Balance: ${ctx.users[0].balance}</h3>
+                      <h3>Balance: </h3>
                       <br />
                       Withdraw Amount
                       <br />
@@ -179,8 +148,8 @@ function Withdraw() {
                     <>
                       <h5 className="fs-2 text-success">Success</h5>
                       <br />
-                      <h5>Withdraw Amount: ${amount} </h5>
-                      <div>Current Balance ${ctx.users[0].balance} </div>
+                      <h5>Withdraw Amount:  </h5>
+                      <div>Current Balance </div>
                       <br />
                       <button
                         type="submit"
@@ -195,8 +164,6 @@ function Withdraw() {
               </div>
             </>
           )}
-        </>
-      )}
     </>
   );
 }

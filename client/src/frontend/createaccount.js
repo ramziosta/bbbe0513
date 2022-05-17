@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { auth } from "../firebase";
-import Card from "../components/context";
-import { UserContext } from "../components/context";
+import Card from "../context/context";
 import { USER_REGEX, PWD_REGEX, EMAIL_REGEX } from "../helpers/FormFieldValidation";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import "../styles/SignIn.css";
@@ -49,7 +48,6 @@ function CreateAccount() {
   const [show, setShow] = useState(true);
   const [created, setCreated] = useState("");
 
-  const ctx = useContext(UserContext);
 
   // sets the focus when the component loads
   useEffect(() => {

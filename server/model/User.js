@@ -2,19 +2,19 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    username: {
+    email: {
         type: String,
         required: true
     },
     roles: {
         User: {
             type: Number,
-            default: 2001
+            default: 2022
         },
         Editor: Number,
         Admin: Number
     },
-    password: {
+    pwd: {
         type: String,
         required: true
     },

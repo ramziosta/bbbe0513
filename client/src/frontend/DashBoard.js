@@ -1,6 +1,4 @@
-import { useContext } from "react";
-import { UserContext } from "../components/context";
-import Card from "../components/context";
+import Card from "../context/context";
 import SiteSideBar from "../components/siteSideBar";
 import { NavLink, Link } from "react-router-dom";
 import LoginLogoutButton from "../components/LoginLogoutButton";
@@ -9,10 +7,10 @@ import Table2 from "../components/Table2";
 import "../styles/alldata.css";
 
 function DashBoard() {
-  const ctx = useContext(UserContext);
+  
   return (
     <>
-      {ctx.users[0].user === "" ? (
+      {/* {ctx.users[0].user === "" ? ( */}
         <>
           <Link to="/login" className="fa fa-user"></Link>
           <div style={{ background: "grey", height: "50vh" }}>

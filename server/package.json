@@ -1,16 +1,19 @@
 {
-  "name": "server",
+  "name": "15tut",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
+  "description": "MongoDB tutorial",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test speciofied\" && exit1",
-    "start": "node server.js",
-    "client": "cd ../client && npm start",
-    "dev": "concurrently -n 'server,client' -c 'yellow,cyan'  \"nodemon server.js\" \"npm run client\""
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "author": "Dave Gray",
+  "license": "ISC",
+  "engines": {
+    "node": "14.x"
   },
   "dependencies": {
-    "axios": "^0.27.2",
+ "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
@@ -26,5 +29,8 @@
     "nodemon": "^2.0.15",
     "react-navi": "^0.14.4",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
   }
 }

@@ -1,4 +1,4 @@
-const Transaction = require('../models/transaction.model')
+const Transaction = require('../model/transaction.model')
 
 
 const handleNewTransaction = async (req, res) => {

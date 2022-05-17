@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect, useRef } from "react";
-import Card from "../components/context";
-import { UserContext } from "../components/context";
+import Card from "../context/context";
+import { UserContext } from "../context/context";
 import LoginLogoutButton from "../components/LoginLogoutButton";
 import SiteSideBar from "../components/siteSideBar";
 import { NavLink, Link } from "react-router-dom";
@@ -14,7 +14,6 @@ function Deposit() {
   const [isDisabled, setIsdisabled] = useState(true);
   const [transactionType, setTransactioinType] = useState("deposit");
   const timeStamp = new Date().toLocaleDateString();
-  const ctx = useContext(UserContext);
 
   function validate(field) {
     if (!Number(field)) {
@@ -42,16 +41,7 @@ function Deposit() {
     if (!validate(amount, "amount")) return;
 
     setBalance(Number(balance) + Number(amount));
-    ctx.users[0].balance += Number(amount);
-
-    ctx.transactions.push({
-      amount,
-      transactionType,
-      balance,
-      transactionDate: timeStamp,
-      stamp: timeStamp,
-    });
-
+ 
     setStatus("deposit");
     setShow(false);
 
@@ -84,27 +74,7 @@ function Deposit() {
   return (
     //> shows the login button and create an account if user not found/ not created/ not logged in
     <>
-      {ctx.users[0].user == "" ? (
-        <>
-          <Link to="/login" className="fa fa-user"></Link>
-          <div style={{ background: "grey", height: "50vh" }}>
-            <div className="text-center fs-3" style={{ padding: "3rem" }}>
-              Please <LoginLogoutButton />
-              <br />
-              or{" "}
-              <NavLink
-                to="/createaccount/"
-                style={{ textDecoration: "none", color: "white" }}
-              >
-                Create An Account.
-              </NavLink>
-            </div>
-          </div>
-        </>
-      ) : (
-        <>
-          {/* //> tennary operator to show and hide the card depending on the handleDeposit */}
-          {show ? (
+      {show ? (
             <>
               <SiteSideBar />
               <div style={{ background: "grey", height: "50vh" }}>
@@ -115,7 +85,7 @@ function Deposit() {
                   status={status}
                   body={
                     <>
-                      <h3>Balance: ${ctx.users[0].balance}</h3>
+                      <h3>Balance: </h3>
                       <br />
                       Deposit Amount:
                       <br />
@@ -174,9 +144,9 @@ function Deposit() {
                     <>
                       <h5 className="fs-2 text-success">Success</h5>
                       <br />
-                      <h5>Deposit Amount: ${amount} </h5>
+                      <h5>Deposit Amount:  </h5>
                       <hr />
-                      <div>Current balance: ${ctx.users[0].balance} </div>
+                      <div>Current balance:  </div>
                       <br />
                       <button
                         type="submit"
@@ -191,8 +161,6 @@ function Deposit() {
               </div>
             </>
           )}
-        </>
-      )}
     </>
   );
 }

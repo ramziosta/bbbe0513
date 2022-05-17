@@ -47,11 +47,11 @@ const menuItems = [
   //   path: "logout",
   //   description: "Logout Page",
   // },
-  // {
-  //   name: "LinkPage",
-  //   path: "linkpage",
-  //   description: "Link Page ",
-  // },
+  {
+    name: "Directory",
+    path: "directory",
+    description: "Directory Page ",
+  },
   // {
   //   name: "Unauthorized",
   //   path: "unauthorized",

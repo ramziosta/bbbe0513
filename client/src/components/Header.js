@@ -1,9 +1,6 @@
-import { useContext } from "react";
-import { UserContext } from "./context"
-
 export default function Header() {
     
-    const ctx = useContext(UserContext);
+    // const ctx = useContext(UserContext);
 
     return (
       <div>
@@ -18,7 +15,7 @@ export default function Header() {
             width: "100%",
           }}
         >
-          Account No. ending in: xxx-xxx-xxx-{ctx.users[0].accountNumber}
+          {/* Account No. ending in: xxx-xxx-xxx-{users[0].accountNumber} */}
         </h4>
         <h4
           className="header"
@@ -31,7 +28,7 @@ export default function Header() {
             width: "100%",
           }}
         >
-          Current Balance: ${ctx.users[0].balance}
+          {/* Current Balance: ${users[0].balance} */}
         </h4>
         <table className="table table-hover table-fixed">
           <tr style={{ width: "100%" }}>

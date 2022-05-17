@@ -1,50 +1,41 @@
-import { useRef, useState, useContext } from "react";
-import axios from '../api/axios';
-import { Link } from "react-router-dom";
-import { Row, Col } from "react-bootstrap";
-import { getAuth, 
-  GoogleAuthProvider, 
-  signInWithPopup, 
-  signInWithEmailAndPassword 
-} from "firebase/auth";
-import Card from "../components/context";
+import { useRef, useState, useEffect, useContext } from "react";
 import AuthContext from "../context/AuthProvider";
-import { UserContext } from "../components/context";
+import axios from "../api/axios";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import Card from "../context/context";
+import useAuth from "../hooks/useAuth";
 import SiteSideBar from "../components/siteSideBar";
 import Header from "../components/Header";
 import Table2 from "../components/Table2";
 import "../styles/SignIn.css";
 
 const provider = new GoogleAuthProvider();
-const LOGIN_URL = '/auth';
+const LOGIN_URL = "/auth";
 
-export const LoginUser = ({ user }) => {
-  return (
-    <>
-      <h3>
-        Welcome <span className="text-danger">{user.user}</span>
-      </h3>
-    </>
-  );
-};
+const Login = () => {
+  const { setAuth } = useContext(AuthContext)
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/dashboard";
 
-function Login() {
-  const { setAuth } = useContext(AuthContext);
-  const { setSession } = useContext(UserContext);
   const userRef = useRef();
   const errRef = useRef();
-
   const [user, setUser] = useState({});
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
   const [isDisabled, setIsdisabled] = useState(true);
   const [warn, setWarn] = useState("");
-  const [errMsg, setErrMsg] = useState('');
-  const [success, setSuccess] = useState('')
+  const [errMsg, setErrMsg] = useState("");
   const [show, setShow] = useState(true);
-  const [status, setStatus] = useState("");
 
- function validate(field, label) {
+  function validate(field, label) {
     if (!field) {
       setWarn(alert(label.toUpperCase() + " IS A REQUIRED FIELD"));
       setTimeout(() => setWarn(""), 3000);
@@ -52,7 +43,19 @@ function Login() {
     }
     return true;
   }
+
+  useEffect(() => {
+    userRef.current.focus();
+  }, []);
+
+  useEffect(() => {
+    setErrMsg("");
+  }, [user, pwd]);
+
+  // firebase log in
+
   const auth = getAuth();
+
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -71,67 +74,71 @@ function Login() {
       });
   };
 
-  async function handleLogin() {
+  async function handleLogin(e) {
+    e.preventDefault();
+
     if (!validate(email, "email")) return;
-    if (!validate(pwd, "password")) return;
+    if (!validate(pwd, "pwd")) return;
+
     // firebase log in
     signInWithEmailAndPassword(auth, email, pwd)
-    .then((userCredential) => {
-      // Signed in 
-      const user = userCredential.user;
-      setAuth({ email, pwd });
-      setShow(false);
-      setUser(user)
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        setAuth({ email, pwd });
+        setShow(false);
+        setUser(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+
     // auth route from mongo db setup JWT tokens and refresh cookies
     try {
-      const response = await axios.post(LOGIN_URL,
-          JSON.stringify({ email, pwd }),
-          {
-              headers: { 'Content-Type': 'application/json' },
-              withCredentials: true
-          }
+      const response = await axios.post(
+        LOGIN_URL,
+        JSON.stringify({ email, pwd }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
       );
-      console.log(JSON.stringify(response?.data));
-      //console.log(JSON.stringify(response));
+
+      //console.log(JSON.stringify(response?.data));
+      console.log(JSON.stringify(response));
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
-      setAuth({user, email, pwd, roles, accessToken });
-      setUser('');
-      setPwd('');
-      setSuccess(true);
+
+      setAuth({ user, email, pwd, roles, accessToken });
       setShow(false);
-      setUser(user)
-  } catch (err) {
+      setUser(user);
+      navigate(from, { replace: true });
+
+
+    } catch (err) {
       if (!err?.response) {
-          setErrMsg(alert('No Server Response'));
+        setErrMsg(alert("No Server Response"));
       } else if (err.response?.status === 400) {
-          setErrMsg(alert('Please check! Email or Password are missing or entered incorrectly'));
+        setErrMsg(
+          alert(
+            "Please check! Email or Password are missing or entered incorrectly"
+          )
+        );
       } else if (err.response?.status === 401) {
-          setErrMsg(alert('User Email Unauthorized'));
+        setErrMsg(alert("User Email Unauthorized"));
       } else {
-          setErrMsg(alert('Login Failed'));
+        setErrMsg(alert("Login Failed"));
       }
       errRef.current.focus();
+      setEmail("");
+      setPwd("");
+    }
   }
-}
-
-  function clearForm() {
-    setEmail("");
-    setPwd("");
-    setIsdisabled(true);
-    setShow(true);
-  }
-
   return (
     <>
       {show ? (
         <>
-        <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
           <div style={{ background: "grey", height: "62vh" }}>
             <Card
               style={{
@@ -203,23 +210,23 @@ function Login() {
                     Login
                   </button>
                   <button
-                    class="login-with-google-btn" style={{marginLeft:"20px"}} 
+                    class="login-with-google-btn"
+                    style={{ marginLeft: "20px" }}
                     onClick={signInWithGoogle}
                   >
                     Sign in with Google
                   </button>
                   <br />
-                  <button type="submit"
-                    className="btn btn-primary" ><Link style={{color:"white", textDecoration:"none", }}
-                    to="/CreateAccount">
-                    Create an Account
-                  </Link> </button>
-                 
-                  
+                  <button type="submit" className="btn btn-primary">
+                    <Link
+                      style={{ color: "white", textDecoration: "none" }}
+                      to="/CreateAccount"
+                    >
+                      Create an Account
+                    </Link>{" "}
+                  </button>
+
                   <br />
-                 
-                 
-                  
                 </>
               }
             />
@@ -236,7 +243,6 @@ function Login() {
             body={
               <>
                 <div className="">
-                  <LoginUser user={user} />
                   <br />
                   <Row className="text-center">
                     <Col>
@@ -278,6 +284,6 @@ function Login() {
       )}
     </>
   );
-}
+};
 
 export default Login;

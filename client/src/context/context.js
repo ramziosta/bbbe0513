@@ -1,8 +1,3 @@
-import React, {createContext} from "react";
-
-export const UserContext = createContext(null);
-export const dataContext = createContext({})
-
 export default function Card(props) {
   function classes() {
     const bg = props.bgcolor ? " bg-" + props.bgcolor : " ";
