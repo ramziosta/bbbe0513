@@ -7,41 +7,19 @@ import Table2 from "../components/Table2";
 import "../styles/alldata.css";
 
 function DashBoard() {
-  
   return (
     <>
-      {/* {ctx.users[0].user === "" ? ( */}
-        <>
-          <Link to="/login" className="fa fa-user"></Link>
-          <div style={{ background: "grey", height: "50vh" }}>
-            <div className="text-center fs-3" style={{ padding: "3rem" }}>
-              Please <LoginLogoutButton />
-              <br />
-              or{" "}
-              <NavLink
-                to="/createaccount/"
-                style={{ textDecoration: "none", color: "white" }}
-              >
-                Create An Account.
-              </NavLink>
+      <SiteSideBar />
+      <div className="content">
+        <Card
+          body={
+            <div>
+              <Header />
+              <Table2 />
             </div>
-          </div>
-        </>
-      ) : (
-        <>
-          <SiteSideBar />
-          <div className="content">
-            <Card
-              body={
-                <div>
-                  <Header />
-                  <Table2 />
-                </div>
-              }
-            />
-          </div>
-        </>
-      )}
+          }
+        />
+      </div>
     </>
   );
 }

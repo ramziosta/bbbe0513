@@ -53,7 +53,7 @@ const menuItems = [
     description: "Directory Page ",
   },
   // {
-  //   name: "Unauthorized",
+  //   name: "User",
   //   path: "unauthorized",
   //   description: "Unauthorized Page",
   // },

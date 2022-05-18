@@ -20,7 +20,7 @@ const provider = new GoogleAuthProvider();
 const LOGIN_URL = "/auth";
 
 const Login = () => {
-  const { setAuth } = useContext(AuthContext)
+  const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/dashboard";
@@ -58,6 +58,12 @@ const Login = () => {
 
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        setAuth({ email, pwd });
+        setUser(user);
+        navigate(from, { replace: true });
+      })
       .then((result) => {
         const name = result.user.displayName;
         const email = result.user.email;
@@ -66,8 +72,6 @@ const Login = () => {
         localStorage.setItem("name", name);
         localStorage.setItem("email", email);
         localStorage.setItem("profilePic", profilePic);
-        setAuth({ email, pwd });
-        setShow(false);
       })
       .catch((error) => {
         console.log(error);
@@ -76,7 +80,6 @@ const Login = () => {
 
   async function handleLogin(e) {
     e.preventDefault();
-
     if (!validate(email, "email")) return;
     if (!validate(pwd, "pwd")) return;
 
@@ -86,8 +89,6 @@ const Login = () => {
         // Signed in
         const user = userCredential.user;
         setAuth({ email, pwd });
-        setShow(false);
-        setUser(user);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -111,11 +112,9 @@ const Login = () => {
       const roles = response?.data?.roles;
 
       setAuth({ user, email, pwd, roles, accessToken });
-      setShow(false);
+      // setShow(false);
       setUser(user);
       navigate(from, { replace: true });
-
-
     } catch (err) {
       if (!err?.response) {
         setErrMsg(alert("No Server Response"));
@@ -136,8 +135,6 @@ const Login = () => {
     }
   }
   return (
-    <>
-      {show ? (
         <>
           <div style={{ background: "grey", height: "62vh" }}>
             <Card
@@ -232,8 +229,15 @@ const Login = () => {
             />
           </div>
         </>
-      ) : (
-        <>
+  );
+};
+
+export default Login;
+
+{/*
+
+
+   <>
           <SiteSideBar />
           <Card
             className="dashboard-card"
@@ -280,10 +284,6 @@ const Login = () => {
             }
           />
           {/* !------------- */}
-        </>
-      )}
-    </>
-  );
-};
+     
 
-export default Login;
+
