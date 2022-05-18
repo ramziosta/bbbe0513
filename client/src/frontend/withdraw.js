@@ -3,6 +3,7 @@ import Card from "../context/context";
 import LoginLogoutButton from "../components/LoginLogoutButton";
 import SiteSideBar from "../components/siteSideBar";
 import { NavLink, Link } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 function Withdraw() {
   const [show, setShow] = useState(true);
@@ -102,7 +103,7 @@ function Withdraw() {
                         }}
                       />
                       <br />
-                      <label htmlFor="confirm_pwd">Account Type: ▶️</label>
+                      {/* <label htmlFor="confirm_pwd">Account Type: ▶️</label>
                       <select
                         onChange={(event) => handleModeSelect(event)}
                         name="mode"
@@ -117,7 +118,7 @@ function Withdraw() {
                         <option id="savings" value="Savings">
                           Savings
                         </option>
-                      </select>
+                      </select>*/}
                       <button
                         disabled={isDisabled ? true : false}
                         type="submit"
@@ -125,7 +126,7 @@ function Withdraw() {
                         onClick={handleWithdraw}
                       >
                         Withdraw
-                      </button>
+                      </button> 
                     </>
                   }
                 />

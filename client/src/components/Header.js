@@ -1,6 +1,10 @@
+import {useState} from 'react'
+import useAuth from "../hooks/useAuth";
+
 export default function Header() {
     
-    // const ctx = useContext(UserContext);
+    const [balance, setBalance] = useState('')
+    const [user, setUser] = useState('')
 
     return (
       <div>
@@ -28,7 +32,20 @@ export default function Header() {
             width: "100%",
           }}
         >
-          {/* Current Balance: ${users[0].balance} */}
+          Welcome {user}!
+        </h4>
+        <h4
+          className="header"
+          style={{
+            fontSize: "1.3rem",
+            color: "white",
+            padding: ".4rem",
+            border: "solid black 1px",
+            backgroundColor: "grey",
+            width: "100%",
+          }}
+        >
+          Current Balance: ${balance}
         </h4>
         <table className="table table-hover table-fixed">
           <tr style={{ width: "100%" }}>

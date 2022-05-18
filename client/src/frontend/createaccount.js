@@ -190,7 +190,8 @@ function CreateAccount() {
                   </p>
                 </section>
               ) : (
-                <div className="form-bg registrationForm bg-dark">
+                <div  style={{ background: "grey", height: "70vh" }}>
+                <div className="form-bg registrationForm bg-dark" >
                   <Card
                     body={
                       <section className="registrationForm bg-dark">
@@ -417,6 +418,7 @@ function CreateAccount() {
                     }
                   />
                 </div>
+                </div>
               )}
             </div>
           </div>
@@ -424,7 +426,7 @@ function CreateAccount() {
       ) : (
         <>
           {/* //<############################## */}
-          <div className="fs-1 mt-4 text-center">
+          <div className="fs-1 mt-4 text-center" >
             <h4>
               Your account has been created successfully.
               <br />

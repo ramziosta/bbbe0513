@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Client = new mongoose.Schema({
+const User = new mongoose.Schema({
   user: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   pwd: { type: String, required: true },
@@ -27,6 +27,6 @@ const Client = new mongoose.Schema({
   cookie: { type: String },
 });
 
-const model = mongoose.model("Client", Client);
+const model = mongoose.model("User", User);
 
 module.exports = model;

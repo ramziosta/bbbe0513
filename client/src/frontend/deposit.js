@@ -5,6 +5,7 @@ import DataContext from "../context/DataProvider";
 import UserContext from "../context/UserProvider";
 import SiteSideBar from "../components/siteSideBar";
 import { NavLink, Link } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 function Deposit() {
   const { setAuth } = useContext(AuthContext);
@@ -101,8 +102,8 @@ useEffect(() => {
                           if (!e.currentTarget.value) setIsdisabled(true);
                         }}
                       />
-                      <br />
-                      <label htmlFor="confirm_pwd">Account Type: ▶️</label>
+                       <br />
+                      {/*<label htmlFor="confirm_pwd">Account Type: ▶️</label>
                       <select
                         onChange={(event) => handleModeSelect(event)}
                         name="mode"
@@ -117,7 +118,7 @@ useEffect(() => {
                         <option id="savings" value="Savings">
                           Savings
                         </option>
-                      </select>
+                      </select>*/}
                       <button
                         disabled={isDisabled ? true : false}
                         type="submit"
@@ -125,7 +126,7 @@ useEffect(() => {
                         onClick={handleDeposit}
                       >
                         Deposit
-                      </button>
+                      </button> 
                     </>
                   }
                 />
