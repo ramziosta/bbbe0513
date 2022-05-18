@@ -8,7 +8,7 @@ function Withdraw() {
   const [show, setShow] = useState(true);
   const [status, setStatus] = useState("");
   const [amount, setAmount] = useState("");
-  const [balance, setBalance] = useState("");
+  const [balance, setBalance] = useState(5555555);
   const [isDisabled, setIsdisabled] = useState(true);
   const [accountType, setAccountType] = useState("");
   const [transactionType, setTransactioinType] = useState("withdraw");
@@ -33,7 +33,7 @@ function Withdraw() {
     }
     return true;
   }
-
+    
   async function handleWithdraw(e) {
     console.log("💸 " + amount);
     if (!validate(amount, "amount")) return;
@@ -85,7 +85,7 @@ function Withdraw() {
                   status={status}
                   body={
                     <>
-                      <h3>Balance: </h3>
+                      <h3>Balance: ${balance}</h3>
                       <br />
                       Withdraw Amount
                       <br />
@@ -102,14 +102,14 @@ function Withdraw() {
                         }}
                       />
                       <br />
-                      <label htmlFor="confirm_pwd">Account Type:</label>
+                      <label htmlFor="confirm_pwd">Account Type: ▶️</label>
                       <select
                         onChange={(event) => handleModeSelect(event)}
                         name="mode"
                         id="mode-select"
                       >
                         <option id="no-selection" value="">
-                          Choose Account Type
+                          Choose Account Type 
                         </option>
                         <option id="checking" value="Checking">
                           Checking
@@ -148,8 +148,8 @@ function Withdraw() {
                     <>
                       <h5 className="fs-2 text-success">Success</h5>
                       <br />
-                      <h5>Withdraw Amount:  </h5>
-                      <div>Current Balance </div>
+                      <h5>Withdraw Amount:  ${amount}</h5>
+                      <div>Current Balance: ${balance} </div>
                       <br />
                       <button
                         type="submit"

@@ -33,15 +33,15 @@ function App() {
           <Route path="unauthorized" element={<Unauthorized />} />
 
           {/* we want to protect these routes */}
-          <Route element={<PersistLogin />}>
-            <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+           <Route element={<PersistLogin />}> 
+            <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}> 
               <Route path="/dashboard/" exact element={<DashBoard />} />
               <Route path="/deposit/" exact element={<Deposit />} />
               <Route path="/withdraw/" exact element={<Withdraw />} />
               <Route path="/logout/" exact element={<Logout />} />
               <Route path="/alldata/" exact element={<AllData />} />
-              {/* <Route path="/userdata/" exact element={<UserData />} /> */}
-            </Route>
+               {/* <Route path="/userdata/" exact element={<UserData />} />  */}
+             </Route> 
 
             <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
               <Route path="editor" element={<Editor />} />
@@ -58,7 +58,7 @@ function App() {
             >
               <Route path="lounge" element={<Lounge />} />
             </Route>
-          </Route>
+          </Route> 
 
           {/* catch all */}
           <Route path="*" element={<Missing />} />

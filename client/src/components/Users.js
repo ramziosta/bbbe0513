@@ -18,7 +18,7 @@ const Users = () => {
                     signal: controller.signal
                 });
                 console.log(response.data);
-                isMounted && setUsers(response.data);
+                isMounted && setUsers(response.data); 
             } catch (err) {
                 console.error(err);
                 navigate('/login', { state: { from: location }, replace: true });
@@ -39,7 +39,7 @@ const Users = () => {
             {users?.length
                 ? (
                     <ul>
-                        {users.map((user, i) => <li key={i}>{user?.username}</li>)}
+                        {users.map((user, i) => <td key={i}><b>User:</b> {user?.user } <b>Balance: </b>{user?.balance}<b>Account Type:</b>{user?.accountType}</td>)}
                     </ul>
                 ) : <p>No users to display</p>
             }

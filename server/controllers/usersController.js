@@ -17,10 +17,10 @@ const deleteUser = async (req, res) => {
 }
 
 const getUser = async (req, res) => {
-    if (!req?.params?.id) return res.status(400).json({ "message": 'User ID required' });
-    const user = await User.findOne({ _id: req.params.id }).exec();
+    if (!req?.params?.email) return res.status(400).json({ "message": 'User Email required' });
+    const user = await User.findOne({ email: req.params.email }).exec();
     if (!user) {
-        return res.status(204).json({ 'message': `User ID ${req.params.id} not found` });
+        return res.status(204).json({ 'message': `User Email ${req.params.email} not found` });
     }
     res.json(user);
 }

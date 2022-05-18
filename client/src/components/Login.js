@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-
+import Card from "../context/context";
 import axios from '../api/axios';
 const LOGIN_URL = '/auth';
 
@@ -17,6 +17,8 @@ const Login = () => {
 
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
+    const [isDisabled, setIsdisabled] = useState(true);
+    const [balance, setBalance] = useState('');
     const [errMsg, setErrMsg] = useState('');
 
     useEffect(() => {
@@ -25,14 +27,14 @@ const Login = () => {
 
     useEffect(() => {
         setErrMsg('');
-    }, [email, pwd])
+    }, [email, pwd, balance])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
             const response = await axios.post(LOGIN_URL,
-                JSON.stringify({ email, pwd }),
+                JSON.stringify({ email, pwd, balance }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
@@ -42,7 +44,7 @@ const Login = () => {
             //console.log(JSON.stringify(response));
             const accessToken = response?.data?.accessToken;
             const roles = response?.data?.roles;
-            setAuth({ email, pwd, roles, accessToken });
+            setAuth({ email, pwd, balance,  roles, accessToken });
             setEmail('');
             setPwd('');
             navigate(from, { replace: true });
@@ -69,48 +71,112 @@ const Login = () => {
     }, [persist])
 
     return (
-
-        <section>
-            <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-            <h1>Sign In</h1>
-            <form onSubmit={handleSubmit}>
+<>
+<section>
+      <div style={{ background: "grey", height: "62vh" }}>
+        <Card
+          style={{
+            maxWidth: "25rem",
+            marginTop: "1rem",
+            backgroundColor: "rgba(30,33,36)",
+            width: "100%",
+            minHeight: "400px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            padding: "1rem",
+          }}
+          className="loginCard bg-dark"
+          body={
+            <>
+              <h1
+                className="logocolor"
+                style={{
+                  border: "solid 2px grey",
+                  padding: ".4rem",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                }}
+              >
+                Login
+              </h1>
+              <br />
+              <p
+                ref={errRef}
+                className={errMsg ? "errmsg" : "offscreen"}
+                aria-live="assertive"
+              >
+                {errMsg}
+              </p>
+              <form onSubmit={handleSubmit}>
                 <label htmlFor="email">email:</label>
                 <input
-                    type="email"
-                    id="email"
-                    ref={emailRef}
-                    autoComplete="off"
-                    onChange={(e) => setEmail(e.target.value)}
-                    value={email}
-                    required
+                  className="form-control"
+                  type="email"
+                  id="email"
+                  placeholder="Email"
+                  ref={emailRef}
+                  autoComplete="off"
+                  onChange={(e) => {
+                    setEmail(e.currentTarget.value);
+                    setIsdisabled(false);
+                    if (!e.currentTarget.value) setIsdisabled(true);
+                  }}
+                  value={email}
+                  required
                 />
-
+                <br />
                 <label htmlFor="password">Password:</label>
                 <input
-                    type="password"
-                    id="password"
-                    onChange={(e) => setPwd(e.target.value)}
-                    value={pwd}
-                    required
+                  className="form-control"
+                  type="password"
+                  id="password"
+                  onChange={(e) => {
+                    setPwd(e.currentTarget.value);
+                    setIsdisabled(false);
+                    if (!e.currentTarget.value) setIsdisabled(true);
+                  }}
+                  value={pwd}
+                  required
                 />
-                <button>Sign In</button>
+                <br />
+                <button
+                  disabled={isDisabled ? true : false}
+                  type="submit"
+                  className="btn btn-primary"
+                >
+                  Sign In
+                </button>
                 <div className="persistCheck">
-                    <input
-                        type="checkbox"
-                        id="persist"
-                        onChange={togglePersist}
-                        checked={persist}
-                    />
-                    <label htmlFor="persist">Trust This Device</label>
+                  <input
+                    type="checkbox"
+                    id="persist"
+                    onChange={togglePersist}
+                    checked={persist}
+                  />
+                  <label htmlFor="persist">Trust This Device</label>
                 </div>
-            </form>
-            <p>
-                Need an Account?<br />
-                <span className="line">
-                    <Link to="/register">Sign Up</Link>
-                </span>
-            </p>
-        </section>
+              </form>
+
+              <br />
+        
+            </>
+          }
+        />
+      </div>
+      <p>
+        Need an Account?
+        <br />
+        <span className="line">
+          <Link to="/register" style={{color:"black"}}><button>Sign Up</button></Link>
+        </span>
+      </p>
+    </section>
+
+
+
+</>
+       
 
     )
 }

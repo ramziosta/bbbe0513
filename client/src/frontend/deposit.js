@@ -1,19 +1,22 @@
-import { useState, useContext, useEffect, useRef } from "react";
+import { useRef, useEffect, useState, useContext } from "react";
 import Card from "../context/context";
-import { UserContext } from "../context/context";
-import LoginLogoutButton from "../components/LoginLogoutButton";
+import AuthContext from "../context/AuthProvider";
+import DataContext from "../context/DataProvider";
+import UserContext from "../context/UserProvider";
 import SiteSideBar from "../components/siteSideBar";
 import { NavLink, Link } from "react-router-dom";
 
 function Deposit() {
+  const { setAuth } = useContext(AuthContext);
+  const { setData } = useContext(DataContext);
+  const { setUser } = useContext(UserContext);
   const [show, setShow] = useState(true);
   const [status, setStatus] = useState("");
   const [amount, setAmount] = useState("");
   const [balance, setBalance] = useState("");
   const [accountType, setAccountType] = useState("");
   const [isDisabled, setIsdisabled] = useState(true);
-  const [transactionType, setTransactioinType] = useState("deposit");
-  const timeStamp = new Date().toLocaleDateString();
+
 
   function validate(field) {
     if (!Number(field)) {
@@ -29,11 +32,11 @@ function Deposit() {
     return true;
   }
 
-// const prevBalance = useRef('');
+const prevBalance = useRef('');
 
-// useEffect(() => {
-//   prevBalance.current = balance
-// }, [balance])
+useEffect(() => {
+  prevBalance.current = balance
+}, [balance])
 
 
   async function handleDeposit(e) {
@@ -51,9 +54,6 @@ function Deposit() {
       body: JSON.stringify({
         amount,
         balance,
-        transactionType,
-        transactionDate: timeStamp,
-        accountType,
       }),
     });
     const transactionData = await response.json();
@@ -85,9 +85,9 @@ function Deposit() {
                   status={status}
                   body={
                     <>
-                      <h3>Balance: </h3>
+                      <h3>Balance: ${balance} </h3>
                       <br />
-                      Deposit Amount:
+                      Deposit Amount: 
                       <br />
                       <input
                         type="input"
@@ -102,14 +102,14 @@ function Deposit() {
                         }}
                       />
                       <br />
-                      <label htmlFor="confirm_pwd">Account Type:</label>
+                      <label htmlFor="confirm_pwd">Account Type: ▶️</label>
                       <select
                         onChange={(event) => handleModeSelect(event)}
                         name="mode"
                         id="mode-select"
                       >
                         <option id="no-selection" value="">
-                          Choose Account Type
+                          Choose Account Type 
                         </option>
                         <option id="checking" value="Checking">
                           Checking
@@ -144,9 +144,9 @@ function Deposit() {
                     <>
                       <h5 className="fs-2 text-success">Success</h5>
                       <br />
-                      <h5>Deposit Amount:  </h5>
+                      <h5>Deposit Amount: ${amount}  </h5>
                       <hr />
-                      <div>Current balance:  </div>
+                      <div>Current balance: ${balance} </div>
                       <br />
                       <button
                         type="submit"

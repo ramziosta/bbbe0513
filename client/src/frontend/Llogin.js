@@ -1,5 +1,7 @@
 import { useRef, useState, useEffect, useContext } from "react";
 import AuthContext from "../context/AuthProvider";
+import DataContext from "../context/DataProvider";
+import UserContext from "../context/UserProvider";
 import axios from "../api/axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
@@ -21,13 +23,14 @@ const LOGIN_URL = "/auth";
 
 const Login = () => {
   const { setAuth } = useContext(AuthContext);
+  const { setData } = useContext(DataContext);
+  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/dashboard";
 
   const userRef = useRef();
   const errRef = useRef();
-  const [user, setUser] = useState({});
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
   const [isDisabled, setIsdisabled] = useState(true);
@@ -110,10 +113,19 @@ const Login = () => {
       console.log(JSON.stringify(response));
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
+      const data = response?.data;
 
       setAuth({ user, email, pwd, roles, accessToken });
-      // setShow(false);
-      setUser(user);
+      setData({ balance: data.balance, transactions: data.transactions });
+      setUser({
+        user,
+        email,
+        roles,
+        accountNumber: data.accountNumber,
+        accountType: data.accountType,
+        created: data.created,
+      });
+
       navigate(from, { replace: true });
     } catch (err) {
       if (!err?.response) {
@@ -135,106 +147,107 @@ const Login = () => {
     }
   }
   return (
-        <>
-          <div style={{ background: "grey", height: "62vh" }}>
-            <Card
-              style={{
-                maxWidth: "25rem",
-                marginTop: "1rem",
-                backgroundColor: "rgba(30,33,36)",
-                width: "100%",
-                minHeight: "400px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-start",
-                padding: "1rem",
-              }}
-              className="loginCard bg-dark"
-              body={
-                <>
-                  <h1
-                    className="logocolor"
-                    style={{
-                      border: "solid 2px grey",
-                      padding: ".4rem",
-                      textAlign: "center",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Login
-                  </h1>
-                  <br />
+    <>
+      <div style={{ background: "grey", height: "62vh" }}>
+        <Card
+          style={{
+            maxWidth: "25rem",
+            marginTop: "1rem",
+            backgroundColor: "rgba(30,33,36)",
+            width: "100%",
+            minHeight: "400px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            padding: "1rem",
+          }}
+          className="loginCard bg-dark"
+          body={
+            <>
+              <h1
+                className="logocolor"
+                style={{
+                  border: "solid 2px grey",
+                  padding: ".4rem",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                }}
+              >
+                Login
+              </h1>
+              <br />
 
-                  {/* //!############ Email ############## */}
-                  <label htmlFor="email">Email address</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    ref={userRef}
-                    autoComplete="off"
-                    placeholder="Email"
-                    required
-                    value={email}
-                    onChange={(e) => {
-                      setEmail(e.currentTarget.value);
-                      setIsdisabled(false);
-                      if (!e.currentTarget.value) setIsdisabled(true);
-                    }}
-                  />
-                  <br />
-                  {/* //!############ Password ############## */}
-                  <label htmlFor="password">Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password"
-                    placeholder="Password"
-                    value={pwd}
-                    onChange={(e) => {
-                      setPwd(e.currentTarget.value);
-                      setIsdisabled(false);
-                      if (!e.currentTarget.value) setIsdisabled(true);
-                    }}
-                  />
-                  <br />
-                  <button
-                    disabled={isDisabled ? true : false}
-                    type="submit"
-                    className="btn btn-primary"
-                    onClick={handleLogin}
-                  >
-                    Login
-                  </button>
-                  <button
-                    class="login-with-google-btn"
-                    style={{ marginLeft: "20px" }}
-                    onClick={signInWithGoogle}
-                  >
-                    Sign in with Google
-                  </button>
-                  <br />
-                  <button type="submit" className="btn btn-primary">
-                    <Link
-                      style={{ color: "white", textDecoration: "none" }}
-                      to="/CreateAccount"
-                    >
-                      Create an Account
-                    </Link>{" "}
-                  </button>
+              {/* //!############ Email ############## */}
+              <label htmlFor="email">Email address</label>
+              <input
+                type="email"
+                className="form-control"
+                id="email"
+                ref={userRef}
+                autoComplete="off"
+                placeholder="Email"
+                required
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.currentTarget.value);
+                  setIsdisabled(false);
+                  if (!e.currentTarget.value) setIsdisabled(true);
+                }}
+              />
+              <br />
+              {/* //!############ Password ############## */}
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                className="form-control"
+                id="password"
+                placeholder="Password"
+                value={pwd}
+                onChange={(e) => {
+                  setPwd(e.currentTarget.value);
+                  setIsdisabled(false);
+                  if (!e.currentTarget.value) setIsdisabled(true);
+                }}
+              />
+              <br />
+              <button
+                disabled={isDisabled ? true : false}
+                type="submit"
+                className="btn btn-primary"
+                onClick={handleLogin}
+              >
+                Login
+              </button>
+              <button
+                class="login-with-google-btn"
+                style={{ marginLeft: "20px" }}
+                onClick={signInWithGoogle}
+              >
+                Sign in with Google
+              </button>
+              <br />
+              <button type="submit" className="btn btn-primary">
+                <Link
+                  style={{ color: "white", textDecoration: "none" }}
+                  to="/CreateAccount"
+                >
+                  Create an Account
+                </Link>{" "}
+              </button>
 
-                  <br />
-                </>
-              }
-            />
-          </div>
-        </>
+              <br />
+            </>
+          }
+        />
+      </div>
+    </>
   );
 };
 
 export default Login;
 
-{/*
+{
+  /*
 
 
    <>
@@ -283,7 +296,5 @@ export default Login;
               </>
             }
           />
-          {/* !------------- */}
-     
-
-
+          {/* !------------- */
+}
