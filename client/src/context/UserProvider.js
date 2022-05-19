@@ -1,43 +1,43 @@
-import { createContext, useState } from "react";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
+// import { createContext, useState } from "react";
+// import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
-const USERS_URL = "/users"
-const UserContext = createContext({});
+// const USERS_URL = "/:email"
+// const UserContext = createContext({});
 
-export const UserProvider = ({ children }) => {
-    const axiosPrivate = useAxiosPrivate();
-    const [userContext, setUserContext] = useState({});
+// export const UserProvider = ({ children }) => {
+//     const axiosPrivate = useAxiosPrivate();
+//     const [userContext, setUserContext] = useState({});
 
-    // gets one users
-    useEffect(() => {
-        let isMounted = true;
-        const controller = new AbortController();
+//     // gets one users
+//     useEffect(() => {
+//         let isMounted = true;
+//         const controller = new AbortController();
 
-        const getUser = async () => {
-            try {
-                const response = await axiosPrivate.get(USERS_URL, {
-                    signal: controller.signal
-                });
-                console.log(response.data);
-                isMounted && setUserContext(response.data); 
-            } catch (err) {
-                console.error(err);
-            }
-        }
+//         const getUser = async () => {
+//             try {
+//                 const response = await axiosPrivate.get(USERS_URL, {
+//                     signal: controller.signal
+//                 });
+//                 console.log(response.data);
+//                 isMounted && setUserContext(response.data); 
+//             } catch (err) {
+//                 console.error(err);
+//             }
+//         }
 
-        getUser();
+//         getUser();
 
-        return () => {
-            isMounted = false;
-            controller.abort();
-        }
-    }, [])
+//         return () => {
+//             isMounted = false;
+//             controller.abort();
+//         }
+//     }, [])
 
-    return (
-        <UserContext.Provider value={{ userContext, setUserContext }}>
-            {children} 
-        </UserContext.Provider>
-    )
-}
+//     return (
+//         <UserContext.Provider value={{ userContext, setUserContext }}>
+//             {children} 
+//         </UserContext.Provider>
+//     )
+// }
 
-export default UserContext;
+// export default UserContext;

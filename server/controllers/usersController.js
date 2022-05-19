@@ -7,12 +7,12 @@ const getAllUsers = async (req, res) => {
 }
 
 const deleteUser = async (req, res) => {
-    if (!req?.body?.id) return res.status(400).json({ "message": 'User ID required' });
-    const user = await User.findOne({ _id: req.body.id }).exec();
+    if (!req?.body?.email) return res.status(400).json({ "message": 'User email required' });
+    const user = await User.findOne({ email: req.body.email }).exec();
     if (!user) {
-        return res.status(204).json({ 'message': `User ID ${req.body.id} not found` });
+        return res.status(204).json({ 'message': `User email ${req.body.email} not found` });
     }
-    const result = await user.deleteOne({ _id: req.body.id });
+    const result = await user.deleteOne({ email: req.body.email });
     res.json(result);
 }
 
@@ -25,17 +25,11 @@ const getUser = async (req, res) => {
     res.json(user);
 }
 
-// const getAllTransactions = async (req,res) => {
-//     const transactions = await User.find({transactions: req.body.transactions});
-//     if (!transactions) return res.status(204).json({ 'message': 'No users found' });
-//     res.json(transactions);
-// }
-
 
 module.exports = {
     getAllUsers,
     deleteUser,
     getUser,
-    // getAllTransactions,
+
 
 }

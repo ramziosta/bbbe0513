@@ -9,13 +9,6 @@ const User = new mongoose.Schema({
   accountNumber: { type: Number },
   created: { type: Date },
   balance: { type: Number },
-  transactions: [
-    {
-      amount: { type: Number },
-      transactionDate: { type: Date },
-      transactionType: { type: String },
-    },
-  ],
   roles: {
     Admin: { type: Number }, //default: 8675
     Editor: { type: Number }, //default:3099

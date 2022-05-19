@@ -3,21 +3,21 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import { AuthProvider } from "./context/AuthProvider";
-import { DataProvider } from "./context/DataProvider";
-import { UserProvider } from "./context/UserProvider";
+// import { DataProvider } from "./context/DataProvider";
+// import { UserProvider } from "./context/UserProvider";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <UserProvider>
-          <DataProvider>
+        {/* <UserProvider>
+          <DataProvider> */}
             <Routes>
               <Route path="/*" element={<App />} />
             </Routes>
-          </DataProvider>
-        </UserProvider>
+          {/* </DataProvider>
+        </UserProvider> */}
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,
