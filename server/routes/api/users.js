@@ -9,7 +9,7 @@ router.route('/')
     .get(verifyRoles(ROLES_LIST.Admin), usersController.getAllUsers)
     .delete(verifyRoles(ROLES_LIST.Admin), usersController.deleteUser);
 
-router.route('/:id')
+router.route('/:email')
     .get(verifyRoles(ROLES_LIST.Admin), usersController.getUser);
 
 
