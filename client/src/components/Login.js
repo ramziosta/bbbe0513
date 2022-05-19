@@ -3,6 +3,7 @@ import useAuth from "../hooks/useAuth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Card from "../context/context";
 import axios from "../api/axios";
+import '../styles/SignIn.css'
 const LOGIN_URL = "/auth";
 
 const Login = () => {
@@ -75,7 +76,7 @@ const Login = () => {
   return (
     <>
       <main>
-        <div style={{ background: "grey", height: "70vh" }}>
+        <div style={{ background: "grey", height: "89vh" }}>
           <Card
             style={{
               maxWidth: "25rem",

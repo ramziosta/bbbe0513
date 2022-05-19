@@ -19,4 +19,13 @@ const handleNewTransaction = async (req, res) => {
   }
 };
 
-module.exports = { handleNewTransaction };
+const getAllTransactions = async (req, res) => {
+  const transactions = await Transaction.find();
+  if (!transactions) return res.status(204).json({ 'message': 'No transactions found' });
+  res.json(transactions);
+}
+
+
+module.exports = { handleNewTransaction, 
+                  getAllTransactions, 
+                };

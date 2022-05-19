@@ -190,7 +190,7 @@ function CreateAccount() {
                   </p>
                 </section>
               ) : (
-                <div  style={{ background: "grey", height: "70vh" }}>
+                <main  style={{ background: "grey", height: "89vh" }}>
                 <div className="form-bg registrationForm bg-dark" >
                   <Card
                     body={
@@ -418,7 +418,7 @@ function CreateAccount() {
                     }
                   />
                 </div>
-                </div>
+                </main>
               )}
             </div>
           </div>
