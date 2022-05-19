@@ -33,9 +33,9 @@ app.use('/refresh', require('./routes/refresh'));
 app.use('/logout', require('./routes/logout'));
 
 // app.use(verifyJWT);
-app.use('/transaction', require('./routes/api/transaction'));
+app.use('/transactions', require('./routes/api/transaction'));
 app.use('/employees', require('./routes/api/employees'));
-app.use('/users/transactions', require('./routes/api/users'))
+// app.use('/transactions', require('./routes/api/transaction'))
 app.use('/users', require('./routes/api/users'));
 
 app.all('*', (req, res) => {

@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import Card from "../context/context";
 import SiteSideBar from "../components/siteSideBar";
 import axios from "../api/axios";
-const TRANSACTION_URL = "/users/transactions/";
+const TRANSACTION_URL = "/user/transactions/";
 
 const timeStamp = new Date().toLocaleDateString();
 
@@ -48,7 +48,6 @@ function Deposit() {
         TRANSACTION_URL,
         JSON.stringify({
           amount,
-          balance,
           transactionDate,
           transactionType,
         }),
@@ -69,6 +68,7 @@ function Deposit() {
         setErrMsg(alert("TransactionFailed Failed"));
       }
     }
+    
   }
   function clearForm() {
     setAmount("");

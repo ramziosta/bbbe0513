@@ -12,7 +12,6 @@ router.route('/')
 router.route('/:id')
     .get(verifyRoles(ROLES_LIST.Admin), usersController.getUser);
 
-router.route('/:transactions')
-                .post(transactionController.handleNewTransaction);
+
 
 module.exports = router;

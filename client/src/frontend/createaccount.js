@@ -9,7 +9,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import "../styles/SignIn.css";
 import axios from "../api/axios";
 const REGISTER_URL = "/register";
-
+const timeStamp = new Date().toLocaleDateString();
 
 function CreateAccount() {
   const userRef = useRef();
@@ -110,7 +110,7 @@ function CreateAccount() {
     // date account created
     setCreated(timeStamp);
     //creates a random last 4 digit account number
-    let accountNumber = Math.floor(Math.random() * 10000);
+    let accountNumber = Math.floor(Math.random() * 10000)
     setAccountNumber(accountNumber);
     console.log("🏦 " + accountNumber);
       // function transform(account){
@@ -136,7 +136,7 @@ function CreateAccount() {
           matchPwd,
           accountType,
           accountNumber,
-          created,
+          created: new Date().toLocaleDateString(),
           balance:0
         }),
         {
