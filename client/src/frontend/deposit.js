@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import Card from "../context/context";
 import SiteSideBar from "../components/siteSideBar";
 import axios from "../api/axios";
-const TRANSACTION_URL = "/transaction";
+const TRANSACTION_URL = "/users/transactions/";
 
 const timeStamp = new Date().toLocaleDateString();
 

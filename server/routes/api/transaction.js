@@ -4,7 +4,7 @@ const transactionController = require('../../controllers/transactionController')
 
 router.post('/', transactionController.handleNewTransaction);
 
-router.get('/', transactionController.getAllTransactions);
+
 
 // router.post('/', transactionController.handleNewTransaction);
 

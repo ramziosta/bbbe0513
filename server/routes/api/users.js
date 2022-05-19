@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const usersController = require('../../controllers/usersController');
+const transactionController = require('../../controllers/transactionController');
 const ROLES_LIST = require('../../config/roles_list');
 const verifyRoles = require('../../middleware/verifyRoles');
 
@@ -10,5 +11,8 @@ router.route('/')
 
 router.route('/:id')
     .get(verifyRoles(ROLES_LIST.Admin), usersController.getUser);
+
+router.route('/:transactions')
+                .post(transactionController.handleNewTransaction);
 
 module.exports = router;

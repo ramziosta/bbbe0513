@@ -25,8 +25,17 @@ const getUser = async (req, res) => {
     res.json(user);
 }
 
+// const getAllTransactions = async (req,res) => {
+//     const transactions = await User.find({transactions: req.body.transactions});
+//     if (!transactions) return res.status(204).json({ 'message': 'No users found' });
+//     res.json(transactions);
+// }
+
+
 module.exports = {
     getAllUsers,
     deleteUser,
-    getUser
+    getUser,
+    // getAllTransactions,
+
 }

@@ -12,10 +12,8 @@ const User = new mongoose.Schema({
   transactions: [
     {
       amount: { type: Number },
-      balance: { type: Number },
       transactionDate: { type: Date },
       transactionType: { type: String },
-      accountType: { type: String },
     },
   ],
   roles: {
