@@ -31,13 +31,14 @@ function App() {
           <Route path="/login/" exact element={<Login />} />
           <Route path="directory" element={<Directory />} />
           <Route path="unauthorized" element={<Unauthorized />} />
+          <Route path="/deposit/" exact element={<Deposit />} />
+              <Route path="/withdraw/" exact element={<Withdraw />} />
 
           {/* we want to protect these routes */}
            <Route element={<PersistLogin />}> 
             <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}> 
               <Route path="/dashboard/" exact element={<DashBoard />} />
-              <Route path="/deposit/" exact element={<Deposit />} />
-              <Route path="/withdraw/" exact element={<Withdraw />} />
+          
               <Route path="/logout/" exact element={<Logout />} />
               <Route path="/alldata/" exact element={<AllData />} />
                {/* <Route path="/userdata/" exact element={<UserData />} />  */}

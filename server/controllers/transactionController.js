@@ -2,7 +2,7 @@ const Transaction = require('../model/transaction.model')
 
 
 const handleNewTransaction = async (req, res) => {
-  const { amount, balance, transactionDate, transactionType, accountType } = req.body;
+  const { amount, balance, transactionDate, transactionType } = req.body;
   
   try {
     const newTransaction = await Transaction.create(
@@ -10,11 +10,10 @@ const handleNewTransaction = async (req, res) => {
         balance: balance,
         transactionDate: transactionDate,
         transactionType: transactionType,
-        accountType: accountType,
       });
 
     console.log(newTransaction);
-    res.status(201).json({ success: `Yout ${newTransaction.transactionType} successful!` });
+    res.status(201).json({ success: `Your ${newTransaction.transactionType} successful!` });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

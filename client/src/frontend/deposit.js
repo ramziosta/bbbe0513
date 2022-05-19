@@ -1,23 +1,20 @@
-import { useRef, useEffect, useState, useContext } from "react";
+import { useRef, useEffect, useState } from "react";
 import Card from "../context/context";
-import AuthContext from "../context/AuthProvider";
-import DataContext from "../context/DataProvider";
-import UserContext from "../context/UserProvider";
 import SiteSideBar from "../components/siteSideBar";
-import { NavLink, Link } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import axios from "../api/axios";
+const TRANSACTION_URL = "/transaction";
+
+const timeStamp = new Date().toLocaleDateString();
 
 function Deposit() {
-  const { setAuth } = useContext(AuthContext);
-  const { setData } = useContext(DataContext);
-  const { setUser } = useContext(UserContext);
   const [show, setShow] = useState(true);
   const [status, setStatus] = useState("");
   const [amount, setAmount] = useState("");
   const [balance, setBalance] = useState("");
-  const [accountType, setAccountType] = useState("");
+  const [transactionType, setTransactionType] = useState("Deposit");
+  const [transactionDate, setTransactionDate] = useState(timeStamp);
   const [isDisabled, setIsdisabled] = useState(true);
-
+  const [errMsg, setErrMsg] = useState("");
 
   function validate(field) {
     if (!Number(field)) {
@@ -33,39 +30,46 @@ function Deposit() {
     return true;
   }
 
-const prevBalance = useRef('');
+  const prevBalance = useRef("");
 
-useEffect(() => {
-  prevBalance.current = balance
-}, [balance])
-
+  useEffect(() => {
+    prevBalance.current = balance;
+  }, [balance]);
 
   async function handleDeposit(e) {
     console.log("💵 " + amount);
     if (!validate(amount, "amount")) return;
 
     setBalance(Number(balance) + Number(amount));
- 
-    setStatus("deposit");
     setShow(false);
 
-    const response = await fetch("http://localhost:4000/transaction", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        amount,
-        balance,
-      }),
-    });
-    const transactionData = await response.json();
-    console.log(transactionData);
+    try {
+      const response = await axios.post(
+        TRANSACTION_URL,
+        JSON.stringify({
+          amount,
+          balance,
+          transactionDate,
+          transactionType,
+        }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      console.log(response?.data);
+      console.log(response?.accessToken);
+      console.log(JSON.stringify(response));
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg(alert("No Server Response"));
+      } else if (err.response?.status === 409) {
+        setErrMsg(alert("transaction Conflict"));
+      } else {
+        setErrMsg(alert("TransactionFailed Failed"));
+      }
+    }
   }
-
-  const handleModeSelect = (event) => {
-    let userSelection = event.target.value;
-    console.log(userSelection);
-    setAccountType(userSelection);
-  };
   function clearForm() {
     setAmount("");
     setIsdisabled(true);
@@ -73,37 +77,36 @@ useEffect(() => {
   }
 
   return (
-    //> shows the login button and create an account if user not found/ not created/ not logged in
     <>
       {show ? (
-            <>
-              <SiteSideBar />
-              <div style={{ background: "grey", height: "50vh" }}>
-                <Card
-                  style={{ maxWidth: "25rem", marginTop: "1rem" }}
-                  bgcolor="dark"
-                  header="Make a deposit"
-                  status={status}
-                  body={
-                    <>
-                      <h3>Balance: ${balance} </h3>
-                      <br />
-                      Deposit Amount: 
-                      <br />
-                      <input
-                        type="input"
-                        className="form-control"
-                        id="amount"
-                        placeholder="Enter amount"
-                        value={amount}
-                        onChange={(e) => {
-                          setAmount(e.currentTarget.value);
-                          setIsdisabled(false);
-                          if (!e.currentTarget.value) setIsdisabled(true);
-                        }}
-                      />
-                       <br />
-                      {/*<label htmlFor="confirm_pwd">Account Type: ▶️</label>
+        <>
+          <SiteSideBar />
+          <div style={{ background: "grey", height: "50vh" }}>
+            <Card
+              style={{ maxWidth: "25rem", marginTop: "1rem" }}
+              bgcolor="dark"
+              header="Make a deposit"
+              status={status}
+              body={
+                <>
+                  <h3>Balance: ${balance} </h3>
+                  <br />
+                  Deposit Amount:
+                  <br />
+                  <input
+                    type="input"
+                    className="form-control"
+                    id="amount"
+                    placeholder="Enter amount"
+                    value={amount}
+                    onChange={(e) => {
+                      setAmount(e.currentTarget.value);
+                      setIsdisabled(false);
+                      if (!e.currentTarget.value) setIsdisabled(true);
+                    }}
+                  />
+                  <br />
+                  {/*<label htmlFor="confirm_pwd">Account Type: ▶️</label>
                       <select
                         onChange={(event) => handleModeSelect(event)}
                         name="mode"
@@ -119,49 +122,49 @@ useEffect(() => {
                           Savings
                         </option>
                       </select>*/}
-                      <button
-                        disabled={isDisabled ? true : false}
-                        type="submit"
-                        className="btn btn-primary"
-                        onClick={handleDeposit}
-                      >
-                        Deposit
-                      </button> 
-                    </>
-                  }
-                />
-              </div>
-            </>
-          ) : (
-            <>
-              <SiteSideBar />
-              <div style={{ background: "grey", height: "50vh" }}>
-                <Card
-                  style={{ maxWidth: "25rem", marginTop: "1rem" }}
-                  bgcolor="dark"
-                  header="Deposit"
-                  // status={status}
-                  body={
-                    <>
-                      <h5 className="fs-2 text-success">Success</h5>
-                      <br />
-                      <h5>Deposit Amount: ${amount}  </h5>
-                      <hr />
-                      <div>Current balance: ${balance} </div>
-                      <br />
-                      <button
-                        type="submit"
-                        className="btn btn-primary"
-                        onClick={clearForm}
-                      >
-                        New Deposit Transaction
-                      </button>
-                    </>
-                  }
-                />
-              </div>
-            </>
-          )}
+                  <button
+                    disabled={isDisabled ? true : false}
+                    type="submit"
+                    className="btn btn-primary"
+                    onClick={handleDeposit}
+                  >
+                    Deposit
+                  </button>
+                </>
+              }
+            />
+          </div>
+        </>
+      ) : (
+        <>
+          <SiteSideBar />
+          <div style={{ background: "grey", height: "50vh" }}>
+            <Card
+              style={{ maxWidth: "25rem", marginTop: "1rem" }}
+              bgcolor="dark"
+              header="Deposit"
+              // status={status}
+              body={
+                <>
+                  <h5 className="fs-2 text-success">Success</h5>
+                  <br />
+                  <h5>Deposit Amount: ${amount} </h5>
+                  <hr />
+                  <div>Current balance: ${balance} </div>
+                  <br />
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    onClick={clearForm}
+                  >
+                    New Deposit Transaction
+                  </button>
+                </>
+              }
+            />
+          </div>
+        </>
+      )}
     </>
   );
 }

@@ -39,7 +39,7 @@ const Users = () => {
             {users?.length
                 ? (
                     <ul>
-                        {users.map((user, i) => <td key={i}><b>User:</b> {user?.user } <b>Balance: </b>{user?.balance}<b>Account Type:</b>{user?.accountType}</td>)}
+                        {users.map((user, i) => <td key={i}><b>User:</b> {user?.user } <b>Balance: </b>{user?.balance}<b>Account Type:</b>{user?.accountType}<b>Account Number:</b>{user?.accountNumber}</td>)}
                     </ul>
                 ) : <p>No users to display</p>
             }
